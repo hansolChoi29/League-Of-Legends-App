@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 라이트 모드와 다크 모드 배경/텍스트 색상 */
+:root {
+  --background: #ffffff; /* 라이트 모드 배경 */
+  --foreground: #000000; /* 라이트 모드 글자색 */
+}
+
+.dark {
+  --background: #1a202c; /* 다크 모드 배경 */
+  --foreground: #f7fafc; /* 다크 모드 글자색 */
+}
+
+/* Tailwind 클래스 적용 */
+body {
+  @apply bg-[--background] text-[--foreground];
+}
