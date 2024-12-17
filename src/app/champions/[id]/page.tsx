@@ -5,7 +5,14 @@ import { notFound } from "next/navigation";
 // SSR 강제: 항상 최신 데이터를 가져옵니다.
 // export const dynamic = "force-dynamic";
 // 동적렌더링 제어
+export async function generateStaticParams() {
+  const response = await fetch(
+    "https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion.json"
+  );
+  const data = await response.json();
 
+  return Object.keys(data.data).map((id) => ({ id }));
+}
 export default async function ChampionDetailPage({
   params,
 }: {
