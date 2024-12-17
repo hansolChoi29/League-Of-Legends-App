@@ -10,6 +10,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
       cache: "no-store",
     }
   );
+  console.log(response);
   const data = await response.json();
   const champion: ChampionData = data.data[params.id];
 
@@ -34,15 +35,23 @@ export default async function ChampionDetailPage({
   const response = await fetch(
     `https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion/${params.id}.json`,
     {
-      cache: "no-store",
+      headers: {
+        "X-Riot-Token": process.env.RIOT_API_KEY || "",
+      },
+      cache: "no-store", // SSR이므로 항상 최신 데이터 불러오기
     }
   );
-  const data = await response.json();
-  const champion: ChampionData = data.data[params.id];
 
-  if (!champion) {
+  // 로그 추가 (서버 콘솔에서 확인)
+  console.log("API Response:", response);
+
+  if (!response.ok) {
+    console.error("Error fetching champion data:", response.status);
     return <div>챔피언을 찾을 수 없습니다.</div>;
   }
+
+  const data = await response.json();
+  const champion: ChampionData = data.data[params.id];
 
   return (
     <div className="relative bg-[#001d3d] text-white h-fit py-6">
