@@ -3,7 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 // SSR 강제: 항상 최신 데이터를 가져옵니다.
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
+// 동적렌더링 제어
 
 export default async function ChampionDetailPage({
   params,
@@ -15,7 +16,7 @@ export default async function ChampionDetailPage({
   // Riot API에서 챔피언 데이터 가져오기
   const response = await fetch(
     `https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion/${params.id}.json`,
-    { cache: "no-store" } // 캐싱 무시하고 최신 데이터 가져옴
+    { cache: "no-store" } // ssr
   );
 
   if (!response.ok) {
@@ -25,7 +26,7 @@ export default async function ChampionDetailPage({
 
   const data = await response.json();
   const champion: ChampionData = data.data[params.id];
-
+  console.log(champion);
   if (!champion) {
     notFound();
   }
