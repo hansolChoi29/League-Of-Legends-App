@@ -7,22 +7,39 @@ import { notFound } from "next/navigation";
 // 동적렌더링 제어
 // export const dynamic = "force-dynamic"; // SSR 강제
 
+// 정적 경로를 생성 (Vercel 배포 시 필요)
+export async function generateStaticParams() {
+  const response = await fetch(
+    "https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion.json"
+  );
+
+  if (!response.ok) {
+    console.error("Failed to fetch champion list:", response.status);
+    return [];
+  }
+
+  const data = await response.json();
+
+  // 모든 챔피언 ID 반환
+  return Object.keys(data.data).map((id) => ({ id }));
+}
+
 export default async function ChampionDetailPage({
   params,
 }: {
   params: { id: string };
 }) {
-  console.log("Params Received:", params);
+  console.log("Params:", params);
 
-  // Riot API에서 데이터 가져오기
+  // Riot API에서 챔피언 데이터 가져오기
   const response = await fetch(
     `https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion/${params.id}.json`,
-    { cache: "no-store" } // 항상 최신 데이터
+    { cache: "no-store" }
   );
 
   if (!response.ok) {
-    console.error("Failed to fetch data:", response.status);
-    notFound(); // 404 페이지 반환
+    console.error("Failed to fetch champion data:", response.status);
+    notFound(); // Next.js 404 페이지 반환
   }
 
   const data = await response.json();
