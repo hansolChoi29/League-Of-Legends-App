@@ -8,15 +8,17 @@ import ThemeToggle from "@/components/ThemeToggle";
 import { ThemeProvider } from "./providers";
 
 const geistSans = localFont({
-  src: "/fonts/GeistVF.woff", // public/fonts/GeistVF.woff 경로로 수정
+  src: "./fonts/GeistVF.woff", // 상대경로 수정
   weight: "100 900",
   variable: "--font-geist-sans",
+  display: "swap",
 });
 
 const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff", // 경로 확인
+  src: "./fonts/GeistMonoVF.woff", // 상대경로 수정
   weight: "100 900",
   variable: "--font-geist-mono",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
