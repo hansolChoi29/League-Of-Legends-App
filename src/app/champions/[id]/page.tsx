@@ -2,18 +2,8 @@ import { ChampionData } from "@/types/Champion";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-// Vercel 배포 시 정적 경로를 설정
-export async function generateStaticParams() {
-  const response = await fetch(
-    "https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion.json"
-  );
-  const data = await response.json();
-
-  // 챔피언 ID 리스트를 반환
-  return Object.keys(data.data).map((id) => ({ id }));
-}
-
-export const dynamic = "force-dynamic"; // SSR 강제 (최신 데이터 보장)
+// SSR 강제: 항상 최신 데이터를 가져옵니다.
+export const dynamic = "force-dynamic";
 
 export default async function ChampionDetailPage({
   params,
@@ -25,19 +15,17 @@ export default async function ChampionDetailPage({
   // Riot API에서 챔피언 데이터 가져오기
   const response = await fetch(
     `https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion/${params.id}.json`,
-    { cache: "no-store" }
+    { cache: "no-store" } // 캐싱 무시하고 최신 데이터 가져옴
   );
 
-  // 잘못된 경로 또는 API 오류 처리
   if (!response.ok) {
     console.error("Failed to fetch data:", response.status);
-    notFound(); // Next.js 404 페이지 리다이렉트
+    notFound();
   }
 
   const data = await response.json();
   const champion: ChampionData = data.data[params.id];
 
-  // 잘못된 챔피언 데이터 접근 시
   if (!champion) {
     notFound();
   }
@@ -56,31 +44,26 @@ export default async function ChampionDetailPage({
           {champion.name}
         </h1>
         <p className="text-lg text-gray-300 mb-2 font-bold">{champion.blurb}</p>
-
         <div className="flex display-col font-bold">
           <div className="border border-lolGold p-4 m-4 w-50">
-            <div className="bg-gray-800 p-4">
-              <h2 className="text-3xl font-bold text-lolGold mt-6 mb-4">
-                능력치
-              </h2>
-              <ul className="grid gap-2 text-gray-200">
-                <li>체력: {champion.stats.hp}</li>
-                <li>공격력: {champion.stats.attackdamage}</li>
-                <li>이동 속도: {champion.stats.movespeed}</li>
-                <li>마법 저항력: {champion.stats.spellblock}</li>
-              </ul>
-            </div>
+            <h2 className="text-3xl font-bold text-lolGold mt-6 mb-4">
+              능력치
+            </h2>
+            <ul className="grid gap-2 text-gray-200">
+              <li>체력: {champion.stats.hp}</li>
+              <li>공격력: {champion.stats.attackdamage}</li>
+              <li>이동 속도: {champion.stats.movespeed}</li>
+              <li>마법 저항력: {champion.stats.spellblock}</li>
+            </ul>
           </div>
           <div className="p-4 m-4 w-44">
-            <div className="p-4">
-              <ul className="flex gap-2 flex-wrap">
-                {champion.tags.map((tag) => (
-                  <li key={tag} className="px-3 py-1 bg-gray-800 rounded-full">
-                    {tag}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <ul className="flex gap-2 flex-wrap">
+              {champion.tags.map((tag) => (
+                <li key={tag} className="px-3 py-1 bg-gray-800 rounded-full">
+                  {tag}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
