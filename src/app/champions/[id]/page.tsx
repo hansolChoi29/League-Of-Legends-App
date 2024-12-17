@@ -1,53 +1,34 @@
 import { ChampionData } from "@/types/Champion";
 import Link from "next/link";
 
-// 챔피언 상세 페이지, SSR을 통해 서버에서 데이터 가져오기
-
-export async function generateMetadata({ params }: { params: { id: string } }) {
-  const response = await fetch(
-    `https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion/${params.id}.json`,
-    {
-      cache: "no-store",
-    }
-  );
-  console.log(response);
-  const data = await response.json();
-  const champion: ChampionData = data.data[params.id];
-
-  if (!champion) {
-    return {
-      title: "챔피언을 찾을 수 없습니다.",
-      description: "해당 챔피언의 정보를 가져올 수 없습니다.",
-    };
-  }
-
-  return {
-    title: `${champion.name} - 리그 오브 레전드`,
-    description: `${champion.name}: ${champion.blurb}`,
-  };
-}
+// **SSR 강제**: Vercel에서 항상 데이터를 요청 시점에 가져오도록 설정합니다.
+export const dynamic = "force-dynamic";
 
 export default async function ChampionDetailPage({
   params,
 }: {
   params: { id: string };
 }) {
+  // 로그 추가: Vercel에서 params.id 값이 제대로 전달되는지 확인합니다.
+  console.log("Params on Vercel:", params);
+
+  // Riot API를 통해 챔피언 데이터를 가져옵니다.
   const response = await fetch(
     `https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion/${params.id}.json`,
     {
-      headers: {
-        "X-Riot-Token": process.env.RIOT_API_KEY || "",
-      },
-      cache: "no-store", // SSR이므로 항상 최신 데이터 불러오기
+      cache: "no-store", // 항상 최신 데이터를 가져옵니다.
     }
   );
 
-  // 로그 추가 (서버 콘솔에서 확인)
-  console.log("API Response:", response);
+  // 응답 확인: Vercel 로그를 통해 문제를 디버깅합니다.
+  console.log("API Response Status:", response.status);
 
+  // 에러 처리
   if (!response.ok) {
-    console.error("Error fetching champion data:", response.status);
-    return <div>챔피언을 찾을 수 없습니다.</div>;
+    console.error("Failed to fetch data on Vercel:", response.status);
+    return (
+      <div className="text-center text-red-500">챔피언을 찾을 수 없습니다.</div>
+    );
   }
 
   const data = await response.json();
@@ -55,18 +36,22 @@ export default async function ChampionDetailPage({
 
   return (
     <div className="relative bg-[#001d3d] text-white h-fit py-6">
+      {/* 배경 이미지 */}
       <div
         className="absolute inset-0 bg-cover bg-right opacity-60"
         style={{
           backgroundImage: `url(https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.id}_0.jpg)`,
         }}
       ></div>
+
+      {/* 챔피언 정보 */}
       <div className="relative z-10 lg:w-1/2 p-24">
         <h1 className="text-5xl text-lolGold font-bold mb-6">
           {champion.name}
         </h1>
         <p className="text-lg text-gray-300 mb-2 font-bold">{champion.blurb}</p>
 
+        {/* 능력치 */}
         <div className="flex display-col font-bold">
           <div className="border border-lolGold p-4 m-4 w-50">
             <div className="bg-gray-800 p-4">
@@ -95,7 +80,7 @@ export default async function ChampionDetailPage({
         </div>
       </div>
 
-      {/* 버튼을 화면 정 가운데 하단에 고정 */}
+      {/* 뒤로가기 버튼 */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
         <Link
           href={"/champions"}
