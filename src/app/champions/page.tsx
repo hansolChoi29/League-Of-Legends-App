@@ -1,32 +1,22 @@
-// 모든 챔피언 목록 페이지, ISR을 통해 정적 생성
-
 import Link from "next/link";
 import Image from "next/image";
-import { Champion } from "@/types/Champion";
+import { ChampionData } from "@/types/Champion";
 
-// 챔피언 목록의 데이터 타입 지정
-type ChampionsData = {
-  [key: string]: Champion; // key-value 형태로 데이터 지정
-};
 export default async function ChampionsPage() {
   const response = await fetch(
     "https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion.json",
     {
-      // Server Actions 활용 여부: 활용
       next: { revalidate: 86400 },
     }
   );
-  if (!response.ok) {
-    throw new Error("챔피언 데이터를 가져오는 중 오류가 발생했습니다."); // 오류 처리 추가
-  }
 
-  const data = (await response.json()) as { data: ChampionsData }; // 데이터 타입 명시
-  const champions = data.data;
+  const data = await response.json();
+  const champions: Record<string, ChampionData> = data.data;
 
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-6">챔피언 목록</h1>
-      <ul className="flex flex-wrap justify-center gap-4 ">
+      <ul className="flex flex-wrap justify-center gap-4">
         {Object.entries(champions).map(([key, champion]) => (
           <li
             key={key}
@@ -34,15 +24,14 @@ export default async function ChampionsPage() {
              transform transition duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-2xl"
           >
             <Link href={`/champions/${key}`}>
-              <div className="relative w-56 h-56 flex flex-col items-center">
-                {/* Next.js Image 컴포넌트로 최적화 */}
+              <div className="relative w-56 h-56">
                 <Image
                   src={`https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${champion.image.full}`}
                   alt={champion.name}
                   fill
                   sizes="(max-width: 640px) 100px, (max-width: 768px) 150px, (max-width: 1024px) 200px, 256px"
                   className="object-cover rounded-xl"
-                  priority // 성능 최적화를 위해 우선순위 설정
+                  priority
                 />
               </div>
               <div className="text-center">
