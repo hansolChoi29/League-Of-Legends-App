@@ -9,19 +9,24 @@ import { notFound } from "next/navigation";
 
 // 정적 경로를 생성 (Vercel 배포 시 필요)
 export async function generateStaticParams() {
-  const response = await fetch(
-    "https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion.json"
-  );
+  try {
+    const response = await fetch(
+      "https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion.json"
+    );
 
-  if (!response.ok) {
-    console.error("Failed to fetch champion list:", response.status);
+    if (!response.ok) {
+      console.error("Failed to fetch champion list:", response.status);
+      return [];
+    }
+
+    const data = await response.json();
+
+    console.log("Generated Static Params:", Object.keys(data.data)); // 확인용 로그
+    return Object.keys(data.data).map((id) => ({ id }));
+  } catch (error) {
+    console.error("Error fetching static params:", error);
     return [];
   }
-
-  const data = await response.json();
-
-  // 모든 챔피언 ID 반환
-  return Object.keys(data.data).map((id) => ({ id }));
 }
 
 export default async function ChampionDetailPage({
