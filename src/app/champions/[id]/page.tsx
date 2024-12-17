@@ -10,9 +10,13 @@ export async function generateStaticParams() {
     "https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion.json"
   );
   const data = await response.json();
+  console.log("Response Status:", response.status);
 
-  return Object.keys(data.data).map((id) => ({ id: id.toLowerCase() }));
+  return Object.keys(data.data).map((id) => ({ id }));
 }
+
+// ISR (Incremental Static Regeneration) 활용
+export const revalidate = 60; // 60초마다 새 데이터 확인
 
 export const dynamicParams = true; // 미리 생성되지 않은 경로도 SSR로 처리
 
@@ -21,7 +25,7 @@ export default async function ChampionDetailPage({
 }: {
   params: { id: string };
 }) {
-  console.log("Params:", params);
+  console.log("Params on Vercel:", params);
 
   const response = await fetch(
     `https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion/${params.id}.json`,
