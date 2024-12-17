@@ -10,9 +10,12 @@ export async function generateStaticParams() {
     "https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion.json"
   );
   const data = await response.json();
-  console.log("Generated Static Params:", Object.keys(data.data)); // 로그 추가
-  return Object.keys(data.data).map((id) => ({ id }));
+
+  return Object.keys(data.data).map((id) => ({ id: id.toLowerCase() }));
 }
+
+export const dynamicParams = true; // 미리 생성되지 않은 경로도 SSR로 처리
+
 export default async function ChampionDetailPage({
   params,
 }: {
@@ -20,20 +23,24 @@ export default async function ChampionDetailPage({
 }) {
   console.log("Params:", params);
 
-  // Riot API에서 챔피언 데이터 가져오기
   const response = await fetch(
     `https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion/${params.id}.json`,
-    { cache: "no-store" } // ssr
+    {
+      headers: {
+        "X-Riot-Token": process.env.RIOT_API_KEY || "",
+      },
+      cache: "no-store",
+    }
   );
 
   if (!response.ok) {
     console.error("Failed to fetch data:", response.status);
-    notFound();
+    notFound(); // 404 처리
   }
 
   const data = await response.json();
   const champion: ChampionData = data.data[params.id];
-  console.log(champion);
+
   if (!champion) {
     notFound();
   }
