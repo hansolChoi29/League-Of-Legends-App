@@ -1,6 +1,4 @@
 import { NextResponse } from "next/server";
-//  http://localhost:3000/api/rotation 접속하여 데이터 잘 나오는지
-//확인함. 잘나옴
 
 export async function GET() {
   try {
@@ -9,11 +7,12 @@ export async function GET() {
       "https://kr.api.riotgames.com/lol/platform/v3/champion-rotations",
       {
         headers: {
-          "X-Riot-Token": process.env.RIOT_API_KEY || "",
+          "X-Riot-Token": process.env.RIOT_API_KEY || "", // API 키 환경변수 사용
         },
       }
     );
 
+    // API 응답 확인
     if (!response.ok) {
       console.error("Riot API 호출 실패:", response.status);
       return NextResponse.json(
@@ -23,7 +22,7 @@ export async function GET() {
     }
 
     const data = await response.json();
-    return NextResponse.json(data); // 클라이언트에 데이터 반환
+    return NextResponse.json(data); // 성공적으로 데이터 반환
   } catch (error) {
     console.error("API Route 내부 오류:", error);
     return NextResponse.json(
