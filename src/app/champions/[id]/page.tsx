@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 // SSR 강제: 항상 최신 데이터를 가져옵니다.
 // export const dynamic = "force-dynamic";
 // 동적렌더링 제어
-export const dynamic = "force-dynamic"; // SSR 강제
+// export const dynamic = "force-dynamic"; // SSR 강제
 
 export default async function ChampionDetailPage({
   params,
