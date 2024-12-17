@@ -2,6 +2,12 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { Champion } from "@/types/Champion";
+
+// 챔피언 목록의 데이터 타입 지정
+type ChampionsData = {
+  [key: string]: Champion; // key-value 형태로 데이터 지정
+};
 export default async function ChampionsPage() {
   const response = await fetch(
     "https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion.json",
@@ -10,7 +16,11 @@ export default async function ChampionsPage() {
       next: { revalidate: 86400 },
     }
   );
-  const data = await response.json();
+  if (!response.ok) {
+    throw new Error("챔피언 데이터를 가져오는 중 오류가 발생했습니다."); // 오류 처리 추가
+  }
+
+  const data = (await response.json()) as { data: ChampionsData }; // 데이터 타입 명시
   const champions = data.data;
 
   return (
