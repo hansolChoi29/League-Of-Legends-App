@@ -9,16 +9,16 @@ LoL은 전 세계적으로 인기 있는 온라인 게임으로, 두 팀의 플�
 
  챔피언과 아이템 정보 그리고 챔피언 로테이션을 조회해볼 수 있습니다.
 
-## 📖 목차 
+## 목차 
 
 1. [PERSONAL](#PERSONAL) 
 2. [주요기능](#주요기능-기능) 
 3. [개발기간](#개발기간) 
 4. [기술스택](#기술스택) 
-5. [서비스 구조](#서비스-구조) 
+5. [프로젝트 파일 구조](#프로젝트-파일-구조) 
 6. [와이어프레임](#와이어프레임) 
-7. [API 명세서](#API-명세서) 
-8. [프로젝트 파일 구조](#프로젝트-파일-구조) 
+7. [프로젝트 파일 구조](#프로젝트-파일-구조) 
+8. [API 명세서](#API-명세서) 
 9. [Trouble Shooting](#trouble-shooting) 
 
 
@@ -29,19 +29,19 @@ LoL은 전 세계적으로 인기 있는 온라인 게임으로, 두 팀의 플�
 |최한솔|ENTJ|
 
 
-## 🚀 주요 기능
+## 주요 기능
 - 챔피언 목록 조회: LoL에 등장하는 모든 챔피언의 정보(이름, 타이틀, 이미지)를 제공합니다.
 - 챔피언 상세 정보: 선택한 챔피언의 상세 정보(능력치, 스토리, 이미지)를 제공합니다.
 - 챔피언 로테이션: 매주 변경되는 무료 챔피언 로테이션 목록을 확인할 수 있습니다.
 - 아이템 목록 조회: 게임 내 등장하는 아이템 목록과 상세 정보를 조회할 수 있습니다.
 
 
-## 📅 개발 기간
+## 개발기간
 2024.12.09(월) ~ 2024.12.19(목)
 
 ## 🛠 기술 스택 및 개발 환경
 
-## ✔️ 기술 스택
+## 기술스택
 ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![React Query](https://img.shields.io/badge/-React%20Query-FF4154?style=for-the-badge&logo=react%20query&logoColor=white)
@@ -59,7 +59,7 @@ LoL은 전 세계적으로 인기 있는 온라인 게임으로, 두 팀의 플�
 ![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
 
 
-## 서비스 구조 
+## 프로젝트 파일 구조
 ![title](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fdfrd4d%2FbtsLlregHHL%2Fyxx3jNIiE0ANvrkJYtFTlk%2Fimg.png)   
 
 
@@ -77,3 +77,4 @@ LoL은 전 세계적으로 인기 있는 온라인 게임으로, 두 팀의 플�
 ![title](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F79Niz%2FbtsLnmWJF8p%2FAj6kSpZzMKelDLkvsqU5W0%2Fimg.png)   
 
 
+## Trouble Shooting
