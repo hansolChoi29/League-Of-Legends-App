@@ -10,6 +10,7 @@ LoL은 전 세계적으로 인기 있는 온라인 게임으로, 두 팀의 플�
  챔피언과 아이템 정보 그리고 챔피언 로테이션을 조회해볼 수 있습니다.
 
 ![title](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FVxUG7%2FbtsLmV6fqtZ%2F29pTAGLoJPoBfRGeAUZtI1%2Fimg.png)   
+  
 
 ## 목차 
 
@@ -67,54 +68,32 @@ LoL은 전 세계적으로 인기 있는 온라인 게임으로, 두 팀의 플�
 
 ## 와이어프레임 
 
-🖥 와이어프레임
-메인 페이지: 서비스 소개 및 주요 기능 링크
-챔피언 목록 페이지: 모든 챔피언 목록과 간단한 정보 제공
-챔피언 상세 페이지: 선택한 챔피언의 상세한 능력치와 스토리 제공
-아이템 목록 페이지: 게임 내 아이템 목록 및 주요 정보 제공
-챔피언 로테이션 페이지: 매주 갱신되는 무료 챔피언 목록 제공
+- 챔피언 목록 페이지: 모든 챔피언 목록과 간단한 정보 제공 </br>
+![title](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fl5xdT%2FbtsLldm2MPG%2FjpkCKL1CluFhbvoYJtKiZ1%2Fimg.png)   
+</br>
+
+- 챔피언 상세 페이지: 선택한 챔피언의 상세한 능력치와 스토리 제공 </br>
+![title](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FFFxf5%2FbtsLlsRKAn4%2Fez0Tt7pOo0QZzql7mQgJ5k%2Fimg.png)   
+</br>
+
+- 아이템 목록 페이지: 게임 내 아이템 목록 및 주요 정보 제공 </br>
+![title](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbYHl5J%2FbtsLk78qkMX%2FndHtV6uDWblEhGu6ENtfMk%2Fimg.png)   
+</br>
+
+- 챔피언 로테이션 페이지: 매주 갱신되는 무료 챔피언 목록 제공 </br>
+
+![title](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcR7IdJ%2FbtsLli2QKyy%2FBcNaK7NOAChTXzVSHijvFK%2Fimg.png)   
+
+
+</br>
 
 ## API 명세서
 
 ![title](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F79Niz%2FbtsLnmWJF8p%2FAj6kSpZzMKelDLkvsqU5W0%2Fimg.png)   
-
-
-## Trouble Shooting
-
-## Trouble Shooting
-
-1) Hydration Error 발생 </br>
-
-문제 </br>
-
- 클라이언트와 서버의 HTML이 일치하지 않아 Hydration Error가 발생했습니다. </br>
-`Warning: Text content does not match server-rendered HTML. 
-`
 </br>
 
-해결</br>
-- 상태 초기화 시 로컬 스토리지를 사용하거나 다크모드 설정 시 SSR과 CSR의 불일치를 방지하기 위해 suppressHydrationWarning**를 <html> 태그에 추가했습니다. </br>
-- 클라이언트 컴포넌트에 **'use client'**를 명시했습니다. </br>
-`<html lang="en" suppressHydrationWarning>
-`
 
-2) Next.js Image 컴포넌트 최적화 경고
-
-문제 </br>
-- Image 컴포넌트에서 fill을 사용할 때 부모 요소의 높이가 설정되지 않아 경고가 발생했습니다. </br>
+## Trouble Shooting
+[Go Trouble Shooting](https://winwin0219.tistory.com/159)   
 
 
-해결 </br>
-- 부모 요소에 relative, w-xx, h-xx와 같은 Tailwind CSS 클래스를 추가해 명시적으로 높이를 설정했습니다. </br>
-- sizes 속성을 추가해 화면 크기에 맞는 이미지 크기를 제공했습니다. </br>
-
-`<div className="relative w-32 h-32">
-   <Image
-     src="URL"
-     alt="example"
-     fill
-     sizes="(max-width: 768px) 128px, (max-width: 1200px) 256px, 512px"
-     className="object-contain"
-   />
-</div>
-`
