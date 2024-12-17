@@ -10,7 +10,7 @@ export async function generateStaticParams() {
     "https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion.json"
   );
   const data = await response.json();
-
+  console.log("Generated Static Params:", Object.keys(data.data)); // 로그 추가
   return Object.keys(data.data).map((id) => ({ id }));
 }
 export default async function ChampionDetailPage({
