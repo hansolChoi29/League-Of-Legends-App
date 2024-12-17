@@ -9,51 +9,36 @@ import { notFound } from "next/navigation";
 
 // 정적 경로를 생성 (Vercel 배포 시 필요)
 
-export const dynamicParams = true; // 동적 경로 허용
-
 export async function generateStaticParams() {
-  try {
-    const response = await fetch(
-      "https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion.json"
-    );
-
-    if (!response.ok) {
-      console.error("Failed to fetch champion list:", response.status);
-      return [];
-    }
-
-    const data = await response.json();
-    return Object.keys(data.data).map((id) => ({ id }));
-  } catch (error) {
-    console.error("Error fetching static params:", error);
-    return [];
-  }
+  const response = await fetch(
+    "https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion.json"
+  );
+  const data = await response.json();
+  return Object.keys(data.data).map((id) => ({ id }));
 }
+
+export const dynamicParams = true;
 
 export default async function ChampionDetailPage({
   params,
 }: {
   params: { id: string };
 }) {
-  console.log("Params Received:", params);
-
   const response = await fetch(
     `https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion/${params.id}.json`,
     { cache: "no-store" }
   );
 
   if (!response.ok) {
-    console.error("Failed to fetch data:", response.status);
     notFound();
   }
 
   const data = await response.json();
-  const champion: ChampionData = data.data[params.id];
+  const champion = data.data[params.id];
 
   if (!champion) {
     notFound();
   }
-
   return (
     <div className="relative bg-[#001d3d] text-white h-fit py-6">
       <div
@@ -82,7 +67,7 @@ export default async function ChampionDetailPage({
           </div>
           <div className="p-4 m-4 w-44">
             <ul className="flex gap-2 flex-wrap">
-              {champion.tags.map((tag) => (
+              {champion.tags.map((tag: any) => (
                 <li key={tag} className="px-3 py-1 bg-gray-800 rounded-full">
                   {tag}
                 </li>
