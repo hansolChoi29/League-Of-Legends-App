@@ -14,10 +14,9 @@ export async function generateStaticParams() {
     "https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion.json"
   );
   const data = await response.json();
+
   return Object.keys(data.data).map((id) => ({ id }));
 }
-
-export const dynamicParams = true;
 
 export default async function ChampionDetailPage({
   params,
@@ -26,7 +25,7 @@ export default async function ChampionDetailPage({
 }) {
   const response = await fetch(
     `https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion/${params.id}.json`,
-    { cache: "no-store" }
+    { cache: "no-store" } // 최신 데이터 가져오기
   );
 
   if (!response.ok) {
@@ -34,7 +33,7 @@ export default async function ChampionDetailPage({
   }
 
   const data = await response.json();
-  const champion = data.data[params.id];
+  const champion: ChampionData = data.data[params.id];
 
   if (!champion) {
     notFound();
