@@ -12,7 +12,7 @@ export default async function ChampionsPage() {
 
   const data = await response.json();
   const champions: Record<string, ChampionData> = data.data;
-
+  console.log(Object.entries(champions));
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-6">챔피언 목록</h1>

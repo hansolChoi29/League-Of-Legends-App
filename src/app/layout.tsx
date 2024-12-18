@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
 import Image from "next/image";
-import Providers from "./rotation/providers";
+import Providers from "./(info)/rotation/providers";
 import ThemeToggle from "@/components/ThemeToggle";
 import { ThemeProvider } from "./providers";
 
