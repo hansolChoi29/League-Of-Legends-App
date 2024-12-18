@@ -42,6 +42,15 @@ export default function ChampionDetailPage({
 
     fetchChampion();
   }, [params.id]);
+  // versel.json에 id 추가했더니 버셀에서 인식됨..
+  // {
+  //   "rewrites": [
+  //     {
+  //       "source": "/champions/:id",
+  //       "destination": "/champions/[id]"
+  //     }
+  //   ]
+  // }
 
   if (loading) return <div>로딩 중...</div>;
   if (error || !champion) return <div>데이터를 불러오지 못했습니다.</div>;
@@ -54,7 +63,7 @@ export default function ChampionDetailPage({
         }}
       ></div>
 
-      <div className="relative z-10 lg:w-1/2 p-24">
+      <div className="relative z-10 lg:w-1/2 p-26 py-32">
         <h1 className="text-5xl text-lolGold font-bold mb-6">
           {champion.name}
         </h1>
