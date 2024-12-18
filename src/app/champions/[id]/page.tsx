@@ -1,43 +1,50 @@
-import { ChampionData } from "@/types/Champion";
-import Link from "next/link";
-import { notFound } from "next/navigation";
-
 // SSR 강제: 항상 최신 데이터를 가져옵니다.
 // export const dynamic = "force-dynamic";
 // 동적렌더링 제어
-// export const dynamic = "force-dynamic"; // SSR 강제
+// export const dynamic = "force-dynamic"; // SSR 강제 => 레드스크린
 
 // 정적 경로를 생성 (Vercel 배포 시 필요)
 
-export async function generateStaticParams() {
-  const response = await fetch(
-    "https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion.json"
-  );
-  const data = await response.json();
+"use client"; // 클라이언트 컴포넌트로 설정
 
-  return Object.keys(data.data).map((id) => ({ id }));
-}
+import { useEffect, useState } from "react";
+import { ChampionData } from "@/types/Champion";
+import Link from "next/link";
 
-export default async function ChampionDetailPage({
+export default function ChampionDetailPage({
   params,
 }: {
   params: { id: string };
 }) {
-  const response = await fetch(
-    `https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion/${params.id}.json`,
-    { cache: "no-store" } // 최신 데이터 가져오기
-  );
+  const [champion, setChampion] = useState<ChampionData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  if (!response.ok) {
-    notFound();
-  }
+  useEffect(() => {
+    async function fetchChampion() {
+      try {
+        const response = await fetch(
+          `https://ddragon.leagueoflegends.com/cdn/14.24.1/data/ko_KR/champion/${params.id}.json`
+        );
 
-  const data = await response.json();
-  const champion: ChampionData = data.data[params.id];
+        if (!response.ok) {
+          throw new Error("데이터를 가져오지 못했습니다.");
+        }
 
-  if (!champion) {
-    notFound();
-  }
+        const data = await response.json();
+        setChampion(data.data[params.id]);
+      } catch (err) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchChampion();
+  }, [params.id]);
+
+  if (loading) return <div>로딩 중...</div>;
+  if (error || !champion) return <div>데이터를 불러오지 못했습니다.</div>;
   return (
     <div className="relative bg-[#001d3d] text-white h-fit py-6">
       <div
