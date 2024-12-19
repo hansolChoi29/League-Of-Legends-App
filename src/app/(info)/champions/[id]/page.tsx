@@ -5,17 +5,13 @@
 
 // 정적 경로를 생성 (Vercel 배포 시 필요)
 
-"use client"; // 클라이언트 컴포넌트로 설정
+'use client'; // 클라이언트 컴포넌트로 설정
 
-import { useEffect, useState } from "react";
-import { ChampionData } from "@/types/Champion";
-import Link from "next/link";
+import { useEffect, useState } from 'react';
+import { ChampionData } from '@/types/Champion';
+import Link from 'next/link';
 
-export default function ChampionDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default function ChampionDetailPage({ params }: { params: { id: string } }) {
   const [champion, setChampion] = useState<ChampionData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -28,7 +24,7 @@ export default function ChampionDetailPage({
         );
 
         if (!response.ok) {
-          throw new Error("데이터를 가져오지 못했습니다.");
+          throw new Error('데이터를 가져오지 못했습니다.');
         }
 
         const data = await response.json();
@@ -59,20 +55,15 @@ export default function ChampionDetailPage({
       <div
         className="absolute inset-0 bg-cover bg-right opacity-60"
         style={{
-          backgroundImage: `url(https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.id}_0.jpg)`,
+          backgroundImage: `url(https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.id}_0.jpg)`
         }}
       ></div>
-
       <div className="relative z-10 lg:w-1/2 p-26 py-32">
-        <h1 className="text-5xl text-lolGold font-bold mb-6">
-          {champion.name}
-        </h1>
+        <h1 className="text-5xl text-lolGold font-bold mb-6">{champion.name}</h1>
         <p className="text-lg text-gray-300 mb-2 font-bold">{champion.blurb}</p>
         <div className="flex display-col font-bold">
-          <div className="border border-lolGold p-4 m-4 w-50">
-            <h2 className="text-3xl font-bold text-lolGold mt-6 mb-4">
-              능력치
-            </h2>
+          <div className="border border-lolGold p-4 m-4 w-50 p-3">
+            <h2 className="text-3xl font-bold text-lolGold mt-6 mb-4">능력치</h2>
             <ul className="grid gap-2 text-gray-200">
               <li>체력: {champion.stats.hp}</li>
               <li>공격력: {champion.stats.attackdamage}</li>
@@ -93,10 +84,7 @@ export default function ChampionDetailPage({
       </div>
 
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-        <Link
-          href={"/champions"}
-          className="p-4 text-[#f7b538] bg-[#001d3d] rounded-xl font-semibold hover:text-white"
-        >
+        <Link href={'/champions'} className="p-4 text-[#f7b538] bg-[#001d3d] rounded-xl font-semibold hover:text-white">
           뒤로
         </Link>
       </div>
